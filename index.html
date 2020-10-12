@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>ip spreadsheet</title>
+  </head>
+  <body>
+
+    <p id="IPMsg"></p>
+    <p id="errorMsg"></p>
+    
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        fetch('https://api.ipify.org?format=text').then(response => response.text()).then(UserIP =>{
+
+            let UserAgent = navigator.userAgent;
+            let UserLang = navigator.language;
+
+            let formdata = new FormData(); // la on fait un form data pour la method Post sur google AppScript
+                formdata.append("userIp", UserIP); // les parametres du form, ici on va lui donné l'ip
+                formdata.append("userAgent", UserAgent); // et la les info user
+                formdata.append("userLang", UserLang);
+
+
+            var requestOptions = {
+                method: 'POST',
+                body: formdata
+            };
+            
+
+            fetch("https://script.google.com/macros/s/AKfycbzAsMMOa1HFSJCFrtl75ba_6zp1sIxur8FjAVEBx4fUPdA0cqw/exec", requestOptions)
+
+            document.querySelector('#IPMsg').innerHTML = "Votre IP est : " + UserIP
+
+            }).catch(error => console.log('error', error));
+        })
+    </script>
+  </body>
+</html>
